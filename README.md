@@ -140,3 +140,9 @@ cd apps/ai-service && uv run ruff check .
 3. Add RAG: embed `documents/tournament-rules.md` into a vector store.
 4. Replace JSON file reads with a PostgreSQL + pgvector database.
 5. Add authentication (JWT) to the Express API.
+
+
+####
+The main purpose of your AI Tournament Operations Copilot is to solve a real operational problem in sports management: tournament information is spread across match records, schedules, venues, spreadsheets, and rule documents, so operations staff spend time finding information, checking details, and preparing reports manually.
+
+You're building an AI assistant that helps them find the right information faster and prepare operational reports with less manual effort.
