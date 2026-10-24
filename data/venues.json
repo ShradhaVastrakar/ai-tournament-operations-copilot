@@ -1,0 +1,16 @@
+[
+  {
+    "id": "v-01",
+    "name": "Veldoria Grand Arena",
+    "city": "Veldoria",
+    "capacity": 42000,
+    "surface": "grass"
+  },
+  {
+    "id": "v-02",
+    "name": "Marveth City Stadium",
+    "city": "Marveth",
+    "capacity": 31500,
+    "surface": "artificial_turf"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "tournament": {
+    "id": "t-001",
+    "name": "Aethon Cup 2025",
+    "sport": "Football",
+    "season": "2025",
+    "status": "in_progress"
+  },
+  "teams": [
+    { "id": "team-01", "name": "Iron Wolves FC", "city": "Veldoria", "code": "IWF" },
+    { "id": "team-02", "name": "Crimson Tide SC", "city": "Marveth", "code": "CTS" },
+    { "id": "team-03", "name": "Azure Falcons", "city": "Lunaris", "code": "AZF" },
+    { "id": "team-04", "name": "Golden Strike FC", "city": "Dawnport", "code": "GSF" }
+  ]
+}

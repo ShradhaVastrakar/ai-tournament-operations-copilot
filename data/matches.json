@@ -1,0 +1,125 @@
+{
+  "_comment": "Match statuses: scheduled=not yet played | completed=final score recorded | pending_result=played but score not yet confirmed",
+  "matches": [
+    {
+      "id": "m-001",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-01",
+      "awayTeamId": "team-02",
+      "venueId": "v-01",
+      "scheduledAt": "2025-03-01T15:00:00Z",
+      "status": "completed",
+      "score": { "home": 2, "away": 1 }
+    },
+    {
+      "id": "m-002",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-03",
+      "awayTeamId": "team-04",
+      "venueId": "v-02",
+      "scheduledAt": "2025-03-01T18:00:00Z",
+      "status": "completed",
+      "score": { "home": 0, "away": 0 }
+    },
+    {
+      "id": "m-003",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-02",
+      "awayTeamId": "team-03",
+      "venueId": "v-02",
+      "scheduledAt": "2025-03-08T15:00:00Z",
+      "status": "completed",
+      "score": { "home": 3, "away": 2 }
+    },
+    {
+      "id": "m-004",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-04",
+      "awayTeamId": "team-01",
+      "venueId": "v-01",
+      "scheduledAt": "2025-03-08T18:00:00Z",
+      "status": "completed",
+      "score": { "home": 1, "away": 1 }
+    },
+    {
+      "id": "m-005",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-01",
+      "awayTeamId": "team-03",
+      "venueId": "v-01",
+      "scheduledAt": "2025-03-15T15:00:00Z",
+      "status": "completed",
+      "score": { "home": 4, "away": 1 }
+    },
+    {
+      "id": "m-006",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-02",
+      "awayTeamId": "team-04",
+      "venueId": "v-02",
+      "scheduledAt": "2025-03-15T18:00:00Z",
+      "status": "pending_result",
+      "score": null
+    },
+    {
+      "id": "m-007",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-04",
+      "awayTeamId": "team-03",
+      "venueId": "v-01",
+      "scheduledAt": "2025-03-22T15:00:00Z",
+      "status": "scheduled",
+      "score": null
+    },
+    {
+      "id": "m-008",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-01",
+      "awayTeamId": "team-04",
+      "venueId": "v-01",
+      "scheduledAt": "2025-03-22T18:00:00Z",
+      "status": "scheduled",
+      "score": null
+    },
+    {
+      "id": "m-009",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-03",
+      "awayTeamId": "team-02",
+      "venueId": "v-02",
+      "scheduledAt": "2025-03-29T15:00:00Z",
+      "status": "scheduled",
+      "score": null
+    },
+    {
+      "id": "m-010",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-04",
+      "awayTeamId": "team-02",
+      "venueId": "v-01",
+      "scheduledAt": "2025-04-05T15:00:00Z",
+      "status": "scheduled",
+      "score": null
+    },
+    {
+      "id": "m-011",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-01",
+      "awayTeamId": "team-02",
+      "venueId": "v-02",
+      "scheduledAt": "2025-04-05T18:00:00Z",
+      "status": "scheduled",
+      "score": null
+    },
+    {
+      "id": "m-012",
+      "tournamentId": "t-001",
+      "homeTeamId": "team-03",
+      "awayTeamId": "team-04",
+      "venueId": "v-02",
+      "scheduledAt": "2025-04-12T15:00:00Z",
+      "status": "scheduled",
+      "score": null
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "ai-tournament-operations-copilot",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,api -c cyan,yellow \"npm run dev --workspace=apps/web\" \"npm run dev --workspace=apps/api\"",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "build": "npm run build --workspace=apps/web && npm run build --workspace=apps/api",
+    "lint": "npm run lint --workspace=apps/web && npm run lint --workspace=apps/api",
+    "format": "prettier --check \"apps/**/*.{ts,tsx,js,json,md}\"",
+    "format:fix": "prettier --write \"apps/**/*.{ts,tsx,js,json,md}\"",
+    "test": "npm run test --workspace=apps/api",
+    "validate:data": "node scripts/validate-data.js"
+  },
+  "devDependencies": {
+    "concurrently": "9.1.2",
+    "prettier": "3.4.2"
+  }
+}
