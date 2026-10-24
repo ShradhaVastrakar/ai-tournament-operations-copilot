@@ -1,0 +1,1 @@
+# ai-tournament-operations-copilot
