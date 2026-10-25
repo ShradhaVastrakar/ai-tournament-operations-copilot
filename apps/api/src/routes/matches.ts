@@ -1,9 +1,10 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import path from "path"
 import { getMatches } from '../services/matchesService';
 import type { ApiResponse, Match, MatchStatus } from '../types';
 import { AppError } from '../middleware/errorHandler';
-
 const router = Router();
+
 
 const VALID_STATUSES: MatchStatus[] = ['scheduled', 'completed', 'pending_result'];
 

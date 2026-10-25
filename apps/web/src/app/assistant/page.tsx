@@ -9,7 +9,7 @@ export default function AssistantPage() {
       <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-gray-400">
         <p className="text-sm">Chat interface will be implemented here.</p>
         <p className="text-xs mt-1">
-          Endpoint: <code className="bg-gray-100 px-1 rounded">POST /api/assistant/chat</code>
+          {/* Endpoint: <code className="bg-gray-100 px-1 rounded">POST /api/assistant/chat</code> */}
         </p>
       </div>
     </div>

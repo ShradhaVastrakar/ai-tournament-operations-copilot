@@ -18,8 +18,8 @@ export default function Nav() {
         <Link
           key={href}
           href={href}
-          className={`text-sm transition-colors ${
-            pathname === href ? 'text-black font-medium' : 'text-gray-500 hover:text-black'
+          className={`text-sm  ${
+            pathname === href ? 'text-white font-medium' : 'text-gray-500 hover:text-white'
           }`}
         >
           {label}
