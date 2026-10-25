@@ -1,11 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { getPlaceholderAnswer } from '../services/assistantService';
+import { getAnswer } from '../services/assistantService';
 import type { ApiResponse, ChatRequest, ChatResponse } from '../types';
 import { AppError } from '../middleware/errorHandler';
 
 const router = Router();
 
-router.post('/chat', (req: Request, res: Response, next: NextFunction) => {
+router.post('/chat', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { message, conversationId } = req.body as Partial<ChatRequest>;
 
@@ -13,7 +13,7 @@ router.post('/chat', (req: Request, res: Response, next: NextFunction) => {
       throw new AppError(400, '"message" is required and must be a non-empty string.');
     }
 
-    const result = getPlaceholderAnswer({ message: message.trim(), conversationId });
+    const result = await getAnswer({ message: message.trim(), conversationId });
     const body: ApiResponse<ChatResponse> = { success: true, data: result };
     res.json(body);
   } catch (err) {
