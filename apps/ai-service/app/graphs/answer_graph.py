@@ -1,12 +1,13 @@
 
 import uuid
-from typing import TypedDict
+from typing import Any, TypedDict
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_groq import ChatGroq
 from langgraph.graph import END, START, StateGraph
 
 from app.core.config import settings
+from app.rag import retrieve
 from app.schemas.answer import AnswerRequest, AnswerResponse
 from app.tools.match_tools import get_match_summary
 
@@ -14,9 +15,10 @@ from app.tools.match_tools import get_match_summary
 class AnswerState(TypedDict, total=False):
     message: str
     answer: str
+    sources: list[str]
 
 
-def generate_answer(state: AnswerState) -> dict[str, str]:
+def generate_answer(state: AnswerState) -> dict[str, Any]:
     """Generate an answer using the configured Groq model."""
     if not settings.groq_api_key:
         raise RuntimeError(
@@ -42,15 +44,31 @@ def generate_answer(state: AnswerState) -> dict[str, str]:
         "match status",
     ]
 
+    context_parts: list[str] = []
+
     if any(phrase in normalized_message for phrase in summary_phrases):
         summary = get_match_summary()
-        context = (
+        context_parts.append(
             f"Actual match data from the tournament JSON file: {summary}\n"
             "Use these exact counts. Do not invent or change any numbers."
         )
+
+    # Rules and regulations always come from the vector DB, never from model memory.
+    chunks = retrieve(message)
+    if chunks:
+        excerpts = "\n\n".join(f"[{c.citation}]\n{c.text}" for c in chunks)
+        context_parts.append(
+            "Excerpts from the tournament rules documents (vector database):\n"
+            f"{excerpts}\n"
+            "Answer rules questions only from these excerpts and cite the source in "
+            "brackets. If the excerpts conflict, say so and name each source."
+        )
+
+    if context_parts:
+        context = "\n\n".join(context_parts)
     else:
         context = (
-            "No tournament data was retrieved for this question. "
+            "No tournament data or rules were retrieved for this question. "
             "Do not invent match counts, scores, schedules, or rules."
         )
 
@@ -60,8 +78,10 @@ def generate_answer(state: AnswerState) -> dict[str, str]:
                 content=(
                     "You are an AI assistant for a tournament operations team. "
                     "Be clear, accurate, and concise. Use supplied data as the "
-                    "source of truth. If the required information is unavailable, "
-                    "say so instead of guessing."
+                    "source of truth. Never answer questions about rules or regulations "
+                    "from your own knowledge; use only the supplied rules excerpts. "
+                    "If the required information is unavailable, say so instead "
+                    "of guessing."
                 )
             ),
             HumanMessage(
@@ -70,7 +90,8 @@ def generate_answer(state: AnswerState) -> dict[str, str]:
         ]
     )
 
-    return {"answer": str(response.content)}
+    sources = list(dict.fromkeys(c.citation for c in chunks))
+    return {"answer": str(response.content), "sources": sources}
 
 
 def build_answer_graph():
@@ -92,6 +113,6 @@ def run_answer_graph(request: AnswerRequest) -> AnswerResponse:
     return AnswerResponse(
         answer=result["answer"],
         conversation_id=request.conversation_id or str(uuid.uuid4()),
-        sources=[],
+        sources=result.get("sources", []),
         is_placeholder=False,
     )

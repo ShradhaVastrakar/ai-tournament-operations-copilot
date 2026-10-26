@@ -45,3 +45,4 @@ Thumbs.db
 # Local databases
 *.sqlite
 *.db
+chroma_db/
