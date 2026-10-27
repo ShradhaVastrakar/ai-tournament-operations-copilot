@@ -6,14 +6,15 @@ interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  sources?: string[];
   timestamp: Date;
 }
 
 const SUGGESTED_QUESTIONS = [
   'How many matches are scheduled?',
-  'How many matches are completed?',
   'Are there any pending results?',
-  'Give me a match status summary.',
+  'Who is top of the standings?',
+  'What are the rules for a penalty shoot-out?',
 ];
 
 function MarkdownText({ text }: { text: string }) {
@@ -72,7 +73,7 @@ export default function AssistantPage() {
 
       const json = await res.json() as {
         success: boolean;
-        data?: { answer: string; conversationId: string };
+        data?: { answer: string; conversationId: string; sources?: string[] };
         error?: string;
       };
 
@@ -80,13 +81,14 @@ export default function AssistantPage() {
         throw new Error(json.error ?? `API error ${res.status}`);
       }
 
-      const { answer, conversationId: newConvId } = json.data!;
+      const { answer, conversationId: newConvId, sources } = json.data!;
       setConvId(newConvId);
 
       const assistantMsg: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
         content: answer,
+        sources,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMsg]);
@@ -172,6 +174,12 @@ export default function AssistantPage() {
           border: 1px solid #e2e8f0;
           border-bottom-left-radius: 4px;
           box-shadow: 0 1px 3px rgba(0,0,0,.04);
+        }
+
+        .source-list { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .4rem; }
+        .source-chip {
+          background: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8;
+          border-radius: 999px; padding: .15rem .6rem; font-size: .7rem;
         }
 
         .bubble-time { font-size: .68rem; opacity: .6; margin-top: .35rem; }
@@ -266,6 +274,13 @@ export default function AssistantPage() {
                     <div className={`bubble ${msg.role}`}>
                       <MarkdownText text={msg.content} />
                     </div>
+                    {msg.sources && msg.sources.length > 0 && (
+                      <div className="source-list" aria-label="Sources">
+                        {msg.sources.map((src) => (
+                          <span key={src} className="source-chip">📄 {src}</span>
+                        ))}
+                      </div>
+                    )}
                     <p className="bubble-time">
                       {msg.timestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
                     </p>

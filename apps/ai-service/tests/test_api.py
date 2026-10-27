@@ -29,9 +29,13 @@ def test_answer_rejects_empty_message():
 
 def test_answer_accepts_conversation_id():
     cid = "test-conv-123"
-    response = client.post(
-        "/internal/ai/answer", json={"message": "Test", "conversation_id": cid}
+    fake_response = AnswerResponse(
+        answer="ok", conversation_id=cid, sources=[], is_placeholder=False
     )
+    with patch("app.api.routes.ai.run_answer_graph", return_value=fake_response):
+        response = client.post(
+            "/internal/ai/answer", json={"message": "Test", "conversation_id": cid}
+        )
     assert response.status_code == 200
     assert response.json()["conversation_id"] == cid
 

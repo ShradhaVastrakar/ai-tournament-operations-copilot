@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     llm_model: str = "openai/gpt-oss-120b"
     groq_api_key: str | None = None
 
+    # Max graph steps per question (each model call or tool call is one step).
+    agent_max_steps: int = 12
+
     vector_db_dir: str = "chroma_db"
     rag_top_k: int = 5
     # Cosine distance cut-off; chunks further away than this are treated as irrelevant.
