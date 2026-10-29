@@ -21,7 +21,6 @@ def test_health_returns_ok():
     assert body["service"] == "ai-service"
 
 
-
 def test_answer_rejects_empty_message():
     response = client.post("/internal/ai/answer", json={"message": ""})
     assert response.status_code == 422  # Pydantic validation error
@@ -38,6 +37,7 @@ def test_answer_accepts_conversation_id():
         )
     assert response.status_code == 200
     assert response.json()["conversation_id"] == cid
+
 
 def test_answer_returns_generated_response():
     fake_response = AnswerResponse(

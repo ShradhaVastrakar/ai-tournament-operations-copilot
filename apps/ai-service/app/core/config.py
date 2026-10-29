@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     port: int = 8000
 
     llm_provider: str = "groq"
-    llm_model: str = "openai/gpt-oss-120b"
+    llm_model: str = "llama-3.1-8b-instant"
     groq_api_key: str | None = None
 
     # Max graph steps per question (each model call or tool call is one step).
