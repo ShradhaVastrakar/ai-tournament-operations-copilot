@@ -43,24 +43,85 @@ reports by hand. The Copilot puts all of it behind one chat box and one dashboar
 
 ## Architecture
 
+### How the services communicate
+
 ```
-Browser → Next.js (3000) → Express API (4000) → FastAPI AI service (8000)
-                                                    │
-                                                    ├─ LangGraph agent (Groq LLM)
-                                                    ├─ Data tools  → data/*.json
-                                                    └─ search_rules → ChromaDB (PDF + markdown)
+User types a question
+        │
+        ▼
+┌─────────────────────────────────────┐
+│  Next.js (port 3000)                │  React UI — renders pages,
+│  apps/web                           │  sends fetch() requests
+└──────────────┬──────────────────────┘
+               │  POST /api/assistant/chat
+               │  { message, conversationId }
+               ▼
+┌─────────────────────────────────────┐
+│  Express API (port 4000)            │  Validates input, enforces CORS,
+│  apps/api                           │  proxies the request to Python
+└──────────────┬──────────────────────┘
+               │  POST /internal/ai/answer   (HTTP, server-to-server)
+               │  { message, conversation_id }
+               ▼
+┌─────────────────────────────────────┐
+│  FastAPI AI service (port 8000)     │  Runs the LangGraph agent:
+│  apps/ai-service                    │
+│                                     │  1. Decides which tools to call
+│  LangGraph StateGraph               │  2. Calls tools (JSON files / ChromaDB)
+│     ├─ Data tools → data/*.json     │  3. Sends tool results + question to Groq
+│     └─ search_rules → ChromaDB      │  4. Returns { answer, sources }
+└──────────────┬──────────────────────┘
+               │  HTTPS
+               ▼
+         Groq LLM API
 ```
 
-The browser never talks to the AI service directly. Express is the single entry point.
-See [`docs/architecture.md`](docs/architecture.md) for details.
+The browser **never** calls the AI service directly. Express is the only public entry
+point — it validates every request, applies CORS headers and rate-limiting, and only
+then forwards the message to the Python service on the internal network.
+
+### Why a separate Python AI service?
+
+The Python AI/ML ecosystem (LangChain, LangGraph, ChromaDB, HuggingFace) is much richer
+than its Node.js equivalents. Keeping LLM orchestration in Python means the team can swap
+models, add re-ranking, or integrate any LangChain tool without touching the web layer.
+The two services talk over plain HTTP so they can be scaled, replaced, or deployed
+independently.
+
+### What does Node.js / Express do?
+
+Express acts as a **secure, validated gateway**:
+- Parses and validates every request body (rejects empty messages, wrong types, etc.).
+- Enforces CORS so only the Next.js origin can call the API.
+- Exposes the match and venue REST endpoints (`GET /api/matches`, `GET /api/venues`).
+- Forwards chat requests to the Python service and maps its `snake_case` response back to
+  `camelCase` for the frontend.
+- The browser is never told the AI service URL or Groq API key.
+
+### Why FastAPI?
+
+FastAPI gives automatic request validation via Pydantic, generates an OpenAPI spec for
+free, and has first-class support for async handlers — useful when adding streaming later.
+It starts in milliseconds and is a natural fit for an internal microservice.
+
+### How does the frontend communicate with the LLM?
+
+Indirectly. The user types a message → `fetch()` to Express → Express forwards to FastAPI
+→ FastAPI runs the LangGraph agent (which may call tools and the Groq API several times)
+→ FastAPI returns a JSON answer → Express returns it to Next.js → React renders the
+bubble. The browser never holds an API key or knows where the LLM is.
+
+### Component table
 
 | Component | Stack | Purpose |
 |-----------|-------|---------|
 | `apps/web` | Next.js 15, React 19, TypeScript, Tailwind | Dashboard, matches, chat UI |
-| `apps/api` | Node.js, Express, TypeScript | Validated REST API; proxies chat to the AI service |
-| `apps/ai-service` | Python 3.12, FastAPI, LangChain, LangGraph, ChromaDB | Agent, tools, RAG |
+| `apps/api` | Node.js 22, Express 5, TypeScript | Validated REST API gateway |
+| `apps/ai-service` | Python 3.12, FastAPI, LangGraph, LangChain, ChromaDB | Agent, tools, RAG |
 
 ### Agent tools
+
+The LangGraph agent decides at runtime which tools to call based on the question.
 
 | Tool | Purpose |
 |------|---------|
@@ -164,8 +225,7 @@ cd apps/ai-service && uv run ruff check .
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `GROQ_API_KEY` | **Yes** | Groq API key. Without it, chat requests fail with a 502 |
-| `LLM_PROVIDER` | No (groq) | LLM provider name |
-| `LLM_MODEL` | No (`openai/gpt-oss-120b`) | Model name |
+| `LLM_MODEL` | No (`llama-3.1-8b-instant`) | Any Groq-hosted model name |
 | `AGENT_MAX_STEPS` | No (12) | Max model and tool steps per question |
 | `VECTOR_DB_DIR` | No (chroma_db) | Where the Chroma DB is stored |
 | `RAG_TOP_K` | No (5) | Chunks retrieved per rules search |
