@@ -33,7 +33,7 @@ def _team_ids(query: str) -> set[str]:
     return {
         team_id
         for team_id, t in _teams().items()
-        if q == team_id or q == t["code"].lower() or q in t["name"].lower() or q in t["city"].lower()
+        if q in (team_id, t["code"].lower()) or q in t["name"].lower() or q in t["city"].lower()
     }
 
 

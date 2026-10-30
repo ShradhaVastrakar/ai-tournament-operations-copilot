@@ -26,8 +26,11 @@ app.use('/api/assistant', assistantRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-  console.log(`API listening on port ${config.port} [${config.nodeEnv}]`);
-});
+// Only listen when run directly; tests import the app and bind their own server.
+if (require.main === module) {
+  app.listen(config.port, () => {
+    console.log(`API listening on port ${config.port} [${config.nodeEnv}]`);
+  });
+}
 
 export default app;

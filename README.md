@@ -6,7 +6,7 @@ and the rulebook in plain English and get answers grounded in tournament data, w
 > **All data is fictional** (the "Aethon Cup 2025"). No real employers, APIs, or confidential
 > datasets are used.
 
-## The problem
+## The problemyes
 
 Tournament information is spread across match records, schedules, venues, spreadsheets and rule
 documents. Operations staff lose time finding facts, double-checking details and preparing
@@ -216,3 +216,7 @@ In priority order:
    against the evaluation set.
 10. **Run the evaluation in CI.** CI already runs `ruff` and `pytest` for the AI service; add the
     evaluation run as a manual job.
+
+![alt text](image-1.png)
+![alt text](<Screenshot from 2026-10-30 15-33-29.png>)
+![alt text](<Screenshot from 2026-10-30 15-33-21.png>)

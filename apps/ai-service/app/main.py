@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import health, ai
+from app.api.routes import ai, health
 
 app = FastAPI(
     title="AI Tournament Operations Copilot — AI Service",

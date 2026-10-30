@@ -3,8 +3,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-
-
 # Repository root / data / matches.json
 MATCHES_FILE = Path(__file__).resolve().parents[4] / "data" / "matches.json"
 

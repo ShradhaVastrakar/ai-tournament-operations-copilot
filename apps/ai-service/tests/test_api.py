@@ -2,13 +2,12 @@
 Tests for the AI service health and answer endpoints.
 Run with: uv run pytest tests/ -v
 """
-import pytest
-from fastapi.testclient import TestClient
 from unittest.mock import patch
 
-from app.schemas.answer import AnswerResponse
+from fastapi.testclient import TestClient
 
 from app.main import app
+from app.schemas.answer import AnswerResponse
 
 client = TestClient(app)
 
