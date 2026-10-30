@@ -6,11 +6,25 @@ and the rulebook in plain English and get answers grounded in tournament data, w
 > **All data is fictional** (the "Aethon Cup 2025"). No real employers, APIs, or confidential
 > datasets are used.
 
-## The problemyes
+## The problem
 
 Tournament information is spread across match records, schedules, venues, spreadsheets and rule
 documents. Operations staff lose time finding facts, double-checking details and preparing
 reports by hand. The Copilot puts all of it behind one chat box and one dashboard.
+
+## Screenshots
+
+**Dashboard**
+
+![Dashboard showing total, completed and upcoming matches](docs/screenshots/dashboard.png)
+
+**Matches** (filter by status)
+
+![Matches page with status tabs and match cards](docs/screenshots/matches.png)
+
+**AI Assistant**
+
+![AI assistant chat page with suggested questions](docs/screenshots/assistant.png)
 
 ## What it does
 
@@ -200,8 +214,9 @@ In priority order:
    rules, follow-ups, "not in the data" cases). Add a script that runs them against the agent and
    reports accuracy and citation correctness. This is the biggest step toward trusting the
    assistant.
-2. **Add a demo to this README.** Screenshots or a short GIF of the dashboard and a chat with
-   citations.
+2. **Show the assistant answering.** The screenshots above cover the dashboard and the empty chat;
+   add a screenshot or short GIF of a real answer with sources (e.g. the penalty shoot-out
+   question).
 3. **Streaming responses and better rendering.** Stream tokens to the UI and render markdown
    (lists, tables) properly.
 4. **Dockerise.** A `docker-compose.yml` for web, api and ai-service so the whole stack starts
@@ -216,7 +231,3 @@ In priority order:
    against the evaluation set.
 10. **Run the evaluation in CI.** CI already runs `ruff` and `pytest` for the AI service; add the
     evaluation run as a manual job.
-
-![alt text](image-1.png)
-![alt text](<Screenshot from 2026-10-30 15-33-29.png>)
-![alt text](<Screenshot from 2026-10-30 15-33-21.png>)
