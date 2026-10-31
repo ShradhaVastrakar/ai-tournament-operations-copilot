@@ -12,7 +12,7 @@ const links = [
 export default function Nav() {
   const pathname = usePathname();
   return (
-    <nav className="border-b border-gray-200 px-4 py-3 flex items-center gap-6">
+    <nav className="h-12 border-b border-gray-200 px-4 flex items-center gap-6">
       <span className="font-semibold text-sm tracking-tight">⚽ Copilot</span>
       {links.map(({ href, label }) => (
         <Link

@@ -28,7 +28,7 @@ reports by hand. The Copilot puts all of it behind one chat box and one dashboar
 
 ## What it does
 
-- **Dashboard and Matches pages** show the fixture list, with status (scheduled, completed,
+- **Dashboard and Matchespages** show the fixture list, with status (scheduled, completed,
   pending result).
 - **Chat assistant** answers questions such as:
   - "How many matches are pending a result?"
