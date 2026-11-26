@@ -10,7 +10,7 @@ router = APIRouter()
 @router.post("/ai/answer", response_model=AnswerResponse)
 def answer(request: AnswerRequest) -> AnswerResponse:
     try:
-        return run_answer_graph(request)
+      return run_answer_graph(request)
     except Exception:
         # Avoid returning internal details or credentials to the caller.
         raise HTTPException(
