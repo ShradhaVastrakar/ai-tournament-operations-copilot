@@ -1,0 +1,17 @@
+# Keep build context small and never bake local secrets/artifacts into images
+**/node_modules
+**/.next
+**/dist
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/chroma_db
+**/.env
+**/.env.*
+!**/.env.example
+.git
+.github
+docs/screenshots
+**/*.log
